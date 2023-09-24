@@ -9,7 +9,7 @@ interface Props {
 const MacroTracker = (props: Props) => {
    
     const [prescribedMacros, setPrescribedMacros] = useState({
-        protein: '', carbs: '', fat: ''
+        protein: 200, carbs: 200, fat: 400
     })
 
     const [inputMacros, setInputMacros] = useState({proteinIntake: 0,
@@ -31,12 +31,23 @@ const MacroTracker = (props: Props) => {
 
     const calculateTotalIntakeCalories = (protein:number,carbs:number,fat:number) => { 
         const total = (protein * 4)  + (carbs*4)  + (fat * 9);
-        console.log(total);
         return total;
     }
+
+    const calculateMacroDifference = ({inputMacros},{prescribedMacros}) => {
+        let proteinDiff = prescribedMacros.protein - inputMacros.proteinIntake;
+        let carbsDiff = prescribedMacros.carbs - inputMacros.carbsIntake;
+        let fatDiff = prescribedMacros.fat - inputMacros.fatIntake;
+        
+        console.log(proteinDiff);
+    }
+
+    calculateMacroDifference({inputMacros},{prescribedMacros});
+
   return (
     <>
     <div>
+        {/* need to save those in db  */}
         <p>Enter your macros for today</p>
         <input name="proteinIntake" placeholder='Grams of proteins' id='proteinIntake'  onChange={handleMacroChange}></input>
         <input name="carbsIntake" placeholder='Grams of carbohydrates' id='carbsIntake'  onChange={handleMacroChange}></input>
@@ -48,7 +59,8 @@ const MacroTracker = (props: Props) => {
     <p>total intake calories: {totalInputCalories}</p>
     <div>
         <p>Prescribed macros</p>
-
+        {/* prescribed macros to be updated weekly - save in db */}
+            {prescribedMacros.protein} {prescribedMacros.carbs} {prescribedMacros.fat}
     </div>
     </>
   )
