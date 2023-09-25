@@ -39,6 +39,7 @@ const MacroTracker = (props: Props) => {
         let carbsDiff = prescribedMacros.carbs - inputMacros.carbsIntake;
         let fatDiff = prescribedMacros.fat - inputMacros.fatIntake;
         
+        let remaining = ``;
         console.log(proteinDiff);
     }
 
