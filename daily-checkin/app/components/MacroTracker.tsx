@@ -8,16 +8,20 @@ interface Props {
 
 const MacroTracker = (props: Props) => {
    
+    //Weekly prescribed macros
     const [prescribedMacros, setPrescribedMacros] = useState({
-        protein: 200, carbs: 200, fat: 400
+        protein: 200, carbs: 200, fat: 70
     })
-
+    // user Input macros for the day
     const [inputMacros, setInputMacros] = useState({proteinIntake: 0,
     carbsIntake: 0,
     fatIntake: 0});
+    // amoutn of calories calculated
     const [totalInputCalories, setTotalInputCalories] = useState(0);
 
-    
+    //difference between user input and prescribed macros
+    const [remainingMacros, setRemainingMacros] = useState("");
+
     const handleMacroChange = (e: any) => {
         setInputMacros({
             ...inputMacros,
@@ -26,7 +30,8 @@ const MacroTracker = (props: Props) => {
     }
 
     useEffect(()=> {
-        setTotalInputCalories(calculateTotalIntakeCalories(inputMacros.proteinIntake,inputMacros.carbsIntake,inputMacros.fatIntake))
+        setTotalInputCalories(calculateTotalIntakeCalories(inputMacros.proteinIntake,inputMacros.carbsIntake,inputMacros.fatIntake));
+        setRemainingMacros(calculateMacroDifference({inputMacros},{prescribedMacros}))
     },[inputMacros.proteinIntake,inputMacros.carbsIntake,inputMacros.fatIntake])
 
     const calculateTotalIntakeCalories = (protein:number,carbs:number,fat:number) => { 
@@ -35,15 +40,19 @@ const MacroTracker = (props: Props) => {
     }
 
     const calculateMacroDifference = ({inputMacros},{prescribedMacros}) => {
-        let proteinDiff = prescribedMacros.protein - inputMacros.proteinIntake;
-        let carbsDiff = prescribedMacros.carbs - inputMacros.carbsIntake;
-        let fatDiff = prescribedMacros.fat - inputMacros.fatIntake;
+        const remainingProtien = prescribedMacros.protein - inputMacros.proteinIntake
+        const remainingCarbs = prescribedMacros.carbs - inputMacros.carbsIntake;
+        const remainingFats = prescribedMacros.fat - inputMacros.fatIntake; 
+        const calorieDifference = `Protein: ${remainingProtien} | Carbs: ${remainingCarbs} | Fat: ${remainingFats}`;
+        return calorieDifference;
         
-        let remaining = ``;
-        console.log(proteinDiff);
+        
+        
     }
 
-    calculateMacroDifference({inputMacros},{prescribedMacros});
+   
+
+
 
   return (
     <>
@@ -63,6 +72,10 @@ const MacroTracker = (props: Props) => {
         {/* prescribed macros to be updated weekly - save in db */}
             {prescribedMacros.protein} {prescribedMacros.carbs} {prescribedMacros.fat}
     </div>
+    <>
+    <p>Remaining Macros</p>
+        {remainingMacros}
+    </>
     </>
   )
 }
