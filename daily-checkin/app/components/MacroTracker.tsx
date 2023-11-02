@@ -50,9 +50,6 @@ const MacroTracker = (props: Props) => {
         
     }
 
-   
-
-
 
   return (
     <>

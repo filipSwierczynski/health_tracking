@@ -8,6 +8,7 @@ export default function Home() {
       </nav>
       <p>Home page</p>
       <MacroTracker greeting="hello"/>
+      <hr></hr>
       <Weight />
     </div>
   )
